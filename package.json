@@ -1,0 +1,17 @@
+{
+  "name": "p-mtl-murals",
+  "version": "1.0.0",
+  "description": "An interactive map showing outdoor murals subsidized by the city of Montreal",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VernL/p-mtl-murals.git"
+  },
+  "author": "Vernon Lillies",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VernL/p-mtl-murals/issues"
+  },
+  "homepage": "https://github.com/VernL/p-mtl-murals#readme",
+  "dependencies": {}
+}
