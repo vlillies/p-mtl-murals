@@ -1,9 +1,10 @@
 (function() {
 
   const geojsonFiles = [{name: 'neighbourhoods', path: './data/quartierssociologiques2014.geojson', geojson: ""},
-                        {name: 'adminRegions', path: './data/limadmin.geojson', geojson: ""}]
+                        {name: 'adminRegions', path: './data/limadmin.geojson', geojson: ""},
+                        {name: 'subways', path: './data/stm.geojson', geojson: ""}]
 
-  const loadFeaturesFromGeojsonFiles = () => {
+  const loadGeojsonFiles = () => {
     let q = d3.queue()
     for (let file of geojsonFiles){
       q.defer(d3.json, file.path)
@@ -18,39 +19,52 @@
     })
   }
 
-  loadFeaturesFromGeojsonFiles()
+  loadGeojsonFiles()
 
   function main () {
-  const svgWidth = 960
-  const svgHeight = 600
+    const svgWidth = 960
+    const svgHeight = 600
 
-  const projection = d3.geoMercator()
-    .rotate([0, -30, 0]).fitSize([svgWidth, svgHeight], geojsonFiles[0].geojson)
+    const projection = d3.geoMercator()
+      .rotate([0, -30, 0]).fitSize([svgWidth, svgHeight], geojsonFiles[0].geojson)
 
-  const path = d3.geoPath()
-    .projection(projection)
+    const path = d3.geoPath()
+      .projection(projection)
 
-  const svg = d3.select('svg')
+    const subwayColorScale = d3.scaleOrdinal()
+      .domain(['bleue', 'jaune', 'orange', 'verte'])
+      .range(['blue', 'yellow', 'orange', 'green'])
 
-  svg
-    .attr('width', svgWidth)
-    .attr('height', svgHeight)
+    const svg = d3.select('svg')
 
-  svg
-    .selectAll('.adminRegion')
-    .data(geojsonFiles[1].geojson.features)
-    .enter()
-    .append('path')
-    .attr('d', path)
-    .classed('adminRegion', true)
+    svg
+      .attr('width', svgWidth)
+      .attr('height', svgHeight)
 
-  svg
-    .selectAll('.neighbourhood')
-    .data(geojsonFiles[0].geojson.features)
-    .enter()
-    .append('path')
-    .attr('d', path)
-    .classed('neighbourhood', true)
-}
+    svg
+      .selectAll('.adminRegion')
+      .data(geojsonFiles[1].geojson.features)
+      .enter()
+      .append('path')
+      .attr('d', path)
+      .classed('adminRegion', true)
+
+    svg
+      .selectAll('.neighbourhood')
+      .data(geojsonFiles[0].geojson.features)
+      .enter()
+      .append('path')
+      .attr('d', path)
+      .classed('neighbourhood', true)
+
+    svg
+      .selectAll('.subway')
+      .data(geojsonFiles[2].geojson.features)
+      .enter()
+      .append('path')
+      .attr('d', path)
+      .style('stroke', d => subwayColorScale(d.properties.route_name))
+      .classed('subway', true)
+  }
 
 })()
