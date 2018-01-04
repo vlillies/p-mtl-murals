@@ -2,9 +2,10 @@
 
   const geojsonFiles = [{name: 'neighbourhoods', path: './data/quartierssociologiques2014.geojson', geojson: ""},
                         {name: 'adminRegions', path: './data/limadmin.geojson', geojson: ""},
-                        {name: 'subways', path: './data/stm.geojson', geojson: ""}]
+                        {name: 'subways', path: './data/stm.geojson', geojson: ""},
+                        {name: 'murals', path: './data/murals.geojson', geojson: ""}]
 
-  const loadGeojsonFiles = () => {
+  const loadGeojsonFilesAndRunMain = () => {
     let q = d3.queue()
     for (let file of geojsonFiles){
       q.defer(d3.json, file.path)
@@ -13,13 +14,17 @@
       if (err) {
         throw err
       } else {
-        geojsonFiles.map((file, i) => file.geojson = files[i])
+        addFilesToGeojsonFiles(files)
         main()
       }
     })
   }
 
-  loadGeojsonFiles()
+  loadGeojsonFilesAndRunMain()
+
+  function addFilesToGeojsonFiles(files) {
+    geojsonFiles.map((file, i) => file.geojson = files[i])
+  }
 
   function main () {
     const svgWidth = 960
@@ -65,6 +70,14 @@
       .attr('d', path)
       .style('stroke', d => subwayColorScale(d.properties.route_name))
       .classed('subway', true)
+
+    svg
+      .selectAll('.mural')
+      .data(geojsonFiles[3].geojson.features)
+      .enter()
+      .append('path')
+      .attr('d', path)
+      .classed('mural', true)
   }
 
 })()

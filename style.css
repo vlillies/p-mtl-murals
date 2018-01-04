@@ -14,3 +14,10 @@
   stroke-width: 4px;
   fill: none;
 }
+
+.mural {
+  stroke: white;
+  stroke-width: 1px;
+  opacity: .8;
+  fill: #111111
+}
