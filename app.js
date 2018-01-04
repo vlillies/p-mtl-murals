@@ -1,6 +1,7 @@
 (function() {
 
-  const geojsonFiles = [{name: 'neighbourhoods', path: './data/quartierssociologiques2014.geojson', geojson: ""}]
+  const geojsonFiles = [{name: 'neighbourhoods', path: './data/quartierssociologiques2014.geojson', geojson: ""},
+                        {name: 'adminRegions', path: './data/limadmin.geojson', geojson: ""}]
 
   const loadFeaturesFromGeojsonFiles = () => {
     let q = d3.queue()
@@ -29,11 +30,21 @@
   const path = d3.geoPath()
     .projection(projection)
 
-  d3.select('svg')
+  const svg = d3.select('svg')
+
+  svg
     .attr('width', svgWidth)
     .attr('height', svgHeight)
 
-  d3.select('svg')
+  svg
+    .selectAll('.adminRegion')
+    .data(geojsonFiles[1].geojson.features)
+    .enter()
+    .append('path')
+    .attr('d', path)
+    .classed('adminRegion', true)
+
+  svg
     .selectAll('.neighbourhood')
     .data(geojsonFiles[0].geojson.features)
     .enter()

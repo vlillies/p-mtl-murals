@@ -4,3 +4,8 @@
   fill: #9dddff;
   opacity: .6;
 }
+
+.adminRegion {
+  fill: grey;
+  opacity: 0.1;
+}
