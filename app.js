@@ -28,7 +28,6 @@
 
   function main () {
 
-
     const svgWidth = 960
     const svgHeight = 600
 
@@ -41,6 +40,10 @@
     const subwayColorScale = d3.scaleOrdinal()
       .domain(['bleue', 'jaune', 'orange', 'verte'])
       .range(['blue', 'yellow', 'orange', 'green'])
+
+    const muralColorScale = d3.scaleOrdinal()
+      .domain([1, 174])
+      .range(d3.schemeCategory20)
 
     const svg = d3.select('svg')
 
@@ -62,7 +65,6 @@
       svg.attr("viewBox", "0 0 " + width + " " + height)
         .attr("perserveAspectRatio", "xMinYMid")
         .call(resize);
-
 
       d3.select(window).on("resize." + container.attr("id"), resize);
 
@@ -104,9 +106,10 @@
       .enter()
       .append('path')
       .attr('d', path)
+      .style('fill', d => muralColorScale(d.properties.id))
       .classed('mural', true)
       .on('mouseover', handleMouseOverMural)
-      .on('mousemove', handleMouseMoveMural)
+      .on('mousemove ', handleMouseMoveMural)
       .on('mouseout', handleMouseOutMural)
       .on('mousedown', handleMouseClickMural)
 
@@ -153,7 +156,7 @@
           )
 
       d3.select('#back')
-        .on('click', handleBackButton)
+        .on('click tap', handleBackButton)
     }
 
     function handleBackButton () {
