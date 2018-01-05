@@ -27,6 +27,13 @@
   }
 
   function main () {
+
+    d3.selection.prototype.moveToFront = function() {
+      return this.each(function(){
+        this.parentNode.appendChild(this);
+      });
+    };
+
     const svgWidth = 960
     const svgHeight = 600
 
@@ -41,6 +48,10 @@
       .range(['blue', 'yellow', 'orange', 'green'])
 
     const svg = d3.select('svg')
+
+    const tooltip = d3.select('body')
+      .append('div')
+      .classed('tooltip', true)
 
     svg
       .attr('width', svgWidth)
@@ -78,6 +89,28 @@
       .append('path')
       .attr('d', path)
       .classed('mural', true)
+      .on('mouseover', function(){
+        d3.select(this)
+          .moveToFront()
+          .classed('active', true)
+      })
+      .on('mousemove', handleMouseOverMural)
+      .on('mouseout', handleMouseOutMural)
+
+    function handleMouseOverMural (d) {
+      tooltip
+        .classed('active', true)
+        .style('left', d3.event.x - (tooltip.node().offsetWidth /2 ) + 'px')
+        .style('top', d3.event.y - (tooltip.node().offsetHeight + 10) + 'px')
+        .html(`<img id='thumbnail' style='width: 200px; height: auto'  src=${d.properties.image}>`)
+    }
+
+    function handleMouseOutMural () {
+      d3.select(this)
+        .classed('active', false)
+      tooltip
+        .classed('active', false)
+    }
   }
 
 })()
