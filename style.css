@@ -51,3 +51,32 @@
 .tooltip.active {
   opacity: 1;
 }
+
+.popup img {
+  max-height: 80vh;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.popup {
+  opacity: 1;
+  pointer-events: auto;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100vh;
+  max-height: 100vh;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 2px #cccccc;
+}
+
+#back {
+  background-color: #9dddff;
+  color: white;
+  border: 0;
+  position: absolute;
+}
