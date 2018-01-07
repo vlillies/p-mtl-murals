@@ -16,13 +16,13 @@
       if (err) {
         throw err
       } else {
-        addFilesToGeojsonFiles(files)
+        loadGeojsonFiles(files)
         main()
       }
     })
   }
 
-  function addFilesToGeojsonFiles(files) {
+  function loadGeojsonFiles(files) {
     geojsonFiles.map((file, i) => file.geojson = files[i])
   }
 
@@ -31,8 +31,12 @@
     const svgWidth = 960
     const svgHeight = 600
 
-    const projection = d3.geoMercator()
-      .rotate([0, -30, 0]).fitSize([svgWidth, svgHeight], geojsonFiles[0].geojson)
+    const setProjection = (geojson) => {
+        projection = d3.geoMercator()
+            .rotate([0, -30, 0]).fitSize([svgWidth, svgHeight], geojson)
+    }
+
+    setProjection(geojsonFiles[0].geojson)
 
     const path = d3.geoPath()
       .projection(projection)
@@ -90,6 +94,7 @@
       .append('path')
       .attr('d', path)
       .classed('neighbourhood', true)
+      .on('click', handleMouseClickNeighbourhood)
 
     svg
       .selectAll('.subway')
@@ -112,6 +117,16 @@
       .on('mousemove ', handleMouseMoveMural)
       .on('mouseout', handleMouseOutMural)
       .on('mousedown', handleMouseClickMural)
+
+
+    function handleMouseClickNeighbourhood(d){
+      let neighbourhoodGeojson =  {
+          type: "FeatureCollection",
+          features: {...d}
+      }
+      setProjection(neighbourhoodGeojson)
+
+    }
 
     function handleMouseOverMural(){
       d3.select(this)
