@@ -1,3 +1,82 @@
+.tooltip {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+  background-color: rgba(255, 255, 255, .8);
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 5px;
+  max-width: 250px;
+}
+
+.tooltip:after {
+  content: ' ';
+  position: absolute;
+  left: 50%;
+  border: 10px solid transparent;
+  border-top-color: red;
+  bottom: -24px;
+  margin-left: -8px;
+}
+
+.tooltip.active {
+  opacity: 1;
+}
+
+.mask {
+  opacity: 0;
+  transition: opacity 200ms;
+  cursor: pointer;
+  height: 100vh;
+  width: 100vw;
+  background-color: gray;
+  position: fixed;
+  top: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.mask.active {
+  opacity: 0.5;
+  pointer-events: auto;
+}
+
+.popup {
+  opacity: 0;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 100vh;
+  max-height: 100vh;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 5px 5px 2px #cccccc;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.popup img {
+  max-height: 80vh;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+.popup.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#back {
+  background-color: #9dddff;
+  color: white;
+  border: 0;
+  position: absolute;
+  cursor: pointer;
+}
+
 .adminRegion {
   fill: grey;
   opacity: 0.1;
@@ -25,58 +104,4 @@
 .mural.active {
   fill: red;
   stroke-width: 0;
-}
-
-.tooltip {
-  opacity: 0;
-  position: absolute;
-  pointer-events: none;
-  background-color: rgba(255, 255, 255, .8);
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  padding: 5px;
-  max-width: 250px;
-}
-
-.tooltip:after {
-  content: ' ';
-  position: absolute;
-  left: 50%;
-  border: 10px solid transparent;
-  border-top-color: red;
-  bottom: -24px;
-  margin-left: -8px;
-}
-
-.tooltip.active {
-  opacity: 1;
-}
-
-.popup img {
-  max-height: 80vh;
-  margin: 0 auto;
-  max-width: 100%;
-}
-
-.popup {
-  opacity: 1;
-  pointer-events: auto;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  max-width: 100vh;
-  max-height: 100vh;
-  margin: 0 auto;
-  background-color: #ffffff;
-  padding: 10px;
-  border-radius: 10px;
-  box-shadow: 5px 5px 2px #cccccc;
-}
-
-#back {
-  background-color: #9dddff;
-  color: white;
-  border: 0;
-  position: absolute;
 }
