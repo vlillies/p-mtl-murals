@@ -60,6 +60,7 @@
     const path = d3.geoPath()
         .projection(projection)
 
+      console.log(projection.translate(), projection.scale())
     svg
       .attr('width', svgWidth)
       .attr('height', svgHeight)
