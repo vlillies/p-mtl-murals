@@ -53,6 +53,23 @@
         .classed('popup', true)
 
     const svg = d3.select('svg')
+      .attr('width', svgWidth)
+      .attr('height', svgHeight)
+      .call(responsivefy)
+      .append('g')
+
+    const g = svg.append('g')
+
+    const zoom = d3.zoom()
+      .scaleExtent([1, 8])
+      .on("zoom", zoomed)
+
+    svg
+      .call(zoom)
+
+    function zoomed(){
+      g.attr("transform", d3.event.transform)
+      }
 
     const projection = d3.geoMercator()
         .rotate([0, -30, 0]).fitSize([svgWidth, svgHeight], geojsonFiles[0].geojson)
@@ -60,13 +77,8 @@
     const path = d3.geoPath()
         .projection(projection)
 
-      console.log(projection.translate(), projection.scale())
-    svg
-      .attr('width', svgWidth)
-      .attr('height', svgHeight)
-      .call(responsivefy)
-
     function responsivefy(svg) {
+      console.log('hey')
       let container = d3.select(svg.node().parentNode),
         width = parseInt(svg.style("width")),
         height = parseInt(svg.style("height")),
@@ -85,7 +97,7 @@
       }
     }
 
-    svg
+    g
       .selectAll('.adminRegion')
       .data(geojsonFiles[1].geojson.features)
       .enter()
@@ -93,7 +105,7 @@
       .attr('d', path)
       .classed('adminRegion', true)
 
-    svg
+    g
       .selectAll('.neighbourhood')
       .data(geojsonFiles[0].geojson.features)
       .enter()
@@ -101,7 +113,7 @@
       .attr('d', path)
       .classed('neighbourhood', true)
 
-      svg
+    g
       .selectAll('.subway')
       .data(geojsonFiles[2].geojson.features)
       .enter()
@@ -110,7 +122,7 @@
       .style('stroke', d => subwayColorScale(d.properties.route_name))
       .classed('subway', true)
 
-    svg
+    g
       .selectAll('.mural')
       .data(geojsonFiles[3].geojson.features)
       .enter()
