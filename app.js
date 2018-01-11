@@ -54,13 +54,24 @@
 
     const svg = d3.select('svg')
 
-    const projection = d3.geoMercator()
-        .rotate([0, -30, 0]).fitSize([svgWidth, svgHeight], geojsonFiles[0].geojson)
+    let geojson = geojsonFiles[0].geojson
 
-    const path = d3.geoPath()
-        .projection(projection)
+    const projection = () => {
+      return (
+        d3.geoMercator()
+          .rotate([0, -30, 0]).fitSize([svgWidth, svgHeight], geojson)
+      )
+    }
 
-      console.log(projection.translate(), projection.scale())
+    const path = () => {
+      return (
+        d3.geoPath()
+        .projection(projection())
+      )
+    }
+
+      // console.log(projection.translate(), projection.scale())
+      // console.log(path.bounds(geojsonFiles[0].geojson))
     svg
       .attr('width', svgWidth)
       .attr('height', svgHeight)
@@ -90,7 +101,7 @@
       .data(geojsonFiles[1].geojson.features)
       .enter()
       .append('path')
-      .attr('d', path)
+      .attr('d', path())
       .classed('adminRegion', true)
 
     svg
@@ -98,15 +109,16 @@
       .data(geojsonFiles[0].geojson.features)
       .enter()
       .append('path')
-      .attr('d', path)
+      .attr('d', path())
       .classed('neighbourhood', true)
+      .on('click', handleNeighbourhoodClick)
 
       svg
       .selectAll('.subway')
       .data(geojsonFiles[2].geojson.features)
       .enter()
       .append('path')
-      .attr('d', path)
+      .attr('d', path())
       .style('stroke', d => subwayColorScale(d.properties.route_name))
       .classed('subway', true)
 
@@ -115,13 +127,26 @@
       .data(geojsonFiles[3].geojson.features)
       .enter()
       .append('path')
-      .attr('d', path)
+      .attr('d', path())
       .style('fill', d => muralColorScale(d.properties.id))
       .classed('mural', true)
       .on('mouseover', handleMouseOverMural)
       .on('mousemove ', handleMouseMoveMural)
       .on('mouseout', handleMouseOutMural)
       .on('mousedown', handleMouseClickMural)
+
+    function handleNeighbourhoodClick (d) {
+      console.log(d)
+      geojson = d
+      svg
+        .selectAll('.neighbourhood')
+        .data(d)
+        .enter()
+        .append('path')
+        .attr('d', path())
+        .classed('neighbourhood', true)
+        .on('click', handleNeighbourhoodClick)
+    }
 
     function handleMouseOverMural(){
       d3.select(this)
@@ -179,7 +204,5 @@
       mask
         .classed('active', false)
     }
-
-    console.log(mask)
   }
 })()
