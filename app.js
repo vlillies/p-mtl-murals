@@ -24,6 +24,7 @@
 
   function loadGeojsonFiles(files) {
     geojsonFiles.map((file, i) => file.geojson = files[i])
+    console.log(geojsonFiles[3].geojson.features)
   }
 
   function main () {
@@ -69,6 +70,11 @@
 
     function zoomed(){
       g.attr("transform", d3.event.transform)
+
+      g
+        .selectAll('.mural')
+        .attr('r', 8 / (d3.event.transform.k) + 'px')
+
       }
 
     const projection = d3.geoMercator()
@@ -78,7 +84,6 @@
         .projection(projection)
 
     function responsivefy(svg) {
-      console.log('hey')
       let container = d3.select(svg.node().parentNode),
         width = parseInt(svg.style("width")),
         height = parseInt(svg.style("height")),
@@ -126,8 +131,11 @@
       .selectAll('.mural')
       .data(geojsonFiles[3].geojson.features)
       .enter()
-      .append('path')
-      .attr('d', path)
+      .append('circle')
+      .attr('cx', d => projection(d.geometry.coordinates)[0])
+      .attr('cy', d => projection(d.geometry.coordinates)[1])
+      .attr('r', '8px')
+      .attr('fill', 'black')
       .style('fill', d => muralColorScale(d.properties.id))
       .classed('mural', true)
       .on('mouseover', handleMouseOverMural)

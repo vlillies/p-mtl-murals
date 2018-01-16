@@ -87,11 +87,13 @@
   stroke-width: 2px;
   fill: #9dddff;
   opacity: .6;
+  vector-effect: non-scaling-stroke;
 }
 
 .subway {
   stroke-width: 4px;
   fill: none;
+  vector-effect: non-scaling-stroke;
 }
 
 .mural {
@@ -99,6 +101,7 @@
   stroke-width: 2px;
   opacity: .8;
   fill: #111111;
+  vector-effect: non-scaling-stroke;
 }
 
 .mural.active {
